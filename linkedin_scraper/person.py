@@ -212,7 +212,7 @@ class Person(Scraper):
             position_summary_details = position_details_list[0] if len(position_details_list) > 0 else None
             position_summary_text = position_details_list[1] if len(position_details_list) > 1 else None
             outer_positions = position_summary_details.find_element(By.XPATH,"*").find_elements(By.XPATH,"*")
-
+            
             institution_name = outer_positions[0].find_element(By.TAG_NAME,"span").text
             degree = outer_positions[1].find_element(By.TAG_NAME,"span").text
 
@@ -270,7 +270,7 @@ class Person(Scraper):
         # get name and location
         self.get_name_and_location()
 
-        self.open_to_work = self.is_open_to_work()
+        # self.open_to_work = self.is_open_to_work()
 
         # get about
         self.get_about()
@@ -290,72 +290,72 @@ class Person(Scraper):
         driver.get(self.linkedin_url)
 
         # get interest
-        try:
+        # try:
 
-            _ = WebDriverWait(driver, self.__WAIT_FOR_ELEMENT_TIMEOUT).until(
-                EC.presence_of_element_located(
-                    (
-                        By.XPATH,
-                        "//*[@class='pv-profile-section pv-interests-section artdeco-container-card artdeco-card ember-view']",
-                    )
-                )
-            )
-            interestContainer = driver.find_element(By.XPATH,
-                "//*[@class='pv-profile-section pv-interests-section artdeco-container-card artdeco-card ember-view']"
-            )
-            for interestElement in interestContainer.find_elements(By.XPATH, 
-                "//*[@class='pv-interest-entity pv-profile-section__card-item ember-view']"
-            ):
-                interest = Interest(
-                    interestElement.find_element(By.TAG_NAME, "h3").text.strip()
-                )
-                self.add_interest(interest)
-        except:
-            pass
+        #     _ = WebDriverWait(driver, self.__WAIT_FOR_ELEMENT_TIMEOUT).until(
+        #         EC.presence_of_element_located(
+        #             (
+        #                 By.XPATH,
+        #                 "//*[@class='pv-profile-section pv-interests-section artdeco-container-card artdeco-card ember-view']",
+        #             )
+        #         )
+        #     )
+        #     interestContainer = driver.find_element(By.XPATH,
+        #         "//*[@class='pv-profile-section pv-interests-section artdeco-container-card artdeco-card ember-view']"
+        #     )
+        #     for interestElement in interestContainer.find_elements(By.XPATH, 
+        #         "//*[@class='pv-interest-entity pv-profile-section__card-item ember-view']"
+        #     ):
+        #         interest = Interest(
+        #             interestElement.find_element(By.TAG_NAME, "h3").text.strip()
+        #         )
+        #         self.add_interest(interest)
+        # except:
+        #     pass
 
         # get accomplishment
-        try:
-            _ = WebDriverWait(driver, self.__WAIT_FOR_ELEMENT_TIMEOUT).until(
-                EC.presence_of_element_located(
-                    (
-                        By.XPATH,
-                        "//*[@class='pv-profile-section pv-accomplishments-section artdeco-container-card artdeco-card ember-view']",
-                    )
-                )
-            )
-            acc = driver.find_element(By.XPATH,
-                "//*[@class='pv-profile-section pv-accomplishments-section artdeco-container-card artdeco-card ember-view']"
-            )
-            for block in acc.find_elements(By.XPATH, 
-                "//div[@class='pv-accomplishments-block__content break-words']"
-            ):
-                category = block.find_element(By.TAG_NAME, "h3")
-                for title in block.find_element(By.TAG_NAME, 
-                    "ul"
-                ).find_elements(By.TAG_NAME, "li"):
-                    accomplishment = Accomplishment(category.text, title.text)
-                    self.add_accomplishment(accomplishment)
-        except:
-            pass
+        # try:
+        #     _ = WebDriverWait(driver, self.__WAIT_FOR_ELEMENT_TIMEOUT).until(
+        #         EC.presence_of_element_located(
+        #             (
+        #                 By.XPATH,
+        #                 "//*[@class='pv-profile-section pv-accomplishments-section artdeco-container-card artdeco-card ember-view']",
+        #             )
+        #         )
+        #     )
+        #     acc = driver.find_element(By.XPATH,
+        #         "//*[@class='pv-profile-section pv-accomplishments-section artdeco-container-card artdeco-card ember-view']"
+        #     )
+        #     for block in acc.find_elements(By.XPATH, 
+        #         "//div[@class='pv-accomplishments-block__content break-words']"
+        #     ):
+        #         category = block.find_element(By.TAG_NAME, "h3")
+        #         for title in block.find_element(By.TAG_NAME, 
+        #             "ul"
+        #         ).find_elements(By.TAG_NAME, "li"):
+        #             accomplishment = Accomplishment(category.text, title.text)
+        #             self.add_accomplishment(accomplishment)
+        # except:
+        #     pass
 
         # get connections
-        try:
-            driver.get("https://www.linkedin.com/mynetwork/invite-connect/connections/")
-            _ = WebDriverWait(driver, self.__WAIT_FOR_ELEMENT_TIMEOUT).until(
-                EC.presence_of_element_located((By.CLASS_NAME, "mn-connections"))
-            )
-            connections = driver.find_element(By.CLASS_NAME, "mn-connections")
-            if connections is not None:
-                for conn in connections.find_elements(By.CLASS_NAME, "mn-connection-card"):
-                    anchor = conn.find_element(By.CLASS_NAME, "mn-connection-card__link")
-                    url = anchor.get_attribute("href")
-                    name = conn.find_element(By.CLASS_NAME, "mn-connection-card__details").find_element(By.CLASS_NAME, "mn-connection-card__name").text.strip()
-                    occupation = conn.find_element(By.CLASS_NAME, "mn-connection-card__details").find_element(By.CLASS_NAME, "mn-connection-card__occupation").text.strip()
+        # try:
+        #     driver.get("https://www.linkedin.com/mynetwork/invite-connect/connections/")
+        #     _ = WebDriverWait(driver, self.__WAIT_FOR_ELEMENT_TIMEOUT).until(
+        #         EC.presence_of_element_located((By.CLASS_NAME, "mn-connections"))
+        #     )
+        #     connections = driver.find_element(By.CLASS_NAME, "mn-connections")
+        #     if connections is not None:
+        #         for conn in connections.find_elements(By.CLASS_NAME, "mn-connection-card"):
+        #             anchor = conn.find_element(By.CLASS_NAME, "mn-connection-card__link")
+        #             url = anchor.get_attribute("href")
+        #             name = conn.find_element(By.CLASS_NAME, "mn-connection-card__details").find_element(By.CLASS_NAME, "mn-connection-card__name").text.strip()
+        #             occupation = conn.find_element(By.CLASS_NAME, "mn-connection-card__details").find_element(By.CLASS_NAME, "mn-connection-card__occupation").text.strip()
 
-                    contact = Contact(name=name, occupation=occupation, url=url)
-                    self.add_contact(contact)
-        except:
-            connections = None
+        #             contact = Contact(name=name, occupation=occupation, url=url)
+        #             self.add_contact(contact)
+        # except:
+        #     connections = None
 
         if close_on_complete:
             driver.quit()
@@ -383,12 +383,20 @@ class Person(Scraper):
             return None
 
     def __repr__(self):
-        return "<Person {name}\n\nAbout\n{about}\n\nExperience\n{exp}\n\nEducation\n{edu}\n\nInterest\n{int}\n\nAccomplishments\n{acc}\n\nContacts\n{conn}>".format(
+        return "Person {name}\n\nAbout\n{about}\n\nCurrent Company\n{curr_company}\n\n Current Position\n {curr_position}".format(
             name=self.name,
             about=self.about,
-            exp=self.experiences,
-            edu=self.educations,
-            int=self.interests,
-            acc=self.accomplishments,
-            conn=self.contacts,
+            curr_company = self.experiences[0].institution_name ,
+            curr_position= self.experiences[0].position_title
+            # exp=self.experiences,
+                        
         )
+        # return "<Person {name}\n\nAbout\n{about}\n\nExperience\n{exp}\n\nEducation\n{edu}\n\nInterest\n{int}\n\nAccomplishments\n{acc}\n\nContacts\n{conn}>".format(
+        #     name=self.name,
+        #     about=self.about,
+        #     exp=self.experiences,
+        #     edu=self.educations,
+        #     int=self.interests,
+        #     acc=self.accomplishments,
+        #     conn=self.contacts,
+        # )
